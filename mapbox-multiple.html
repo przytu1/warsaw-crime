@@ -46,11 +46,18 @@ var map = L.mapbox.map('map', 'mapbox.emerald').setView([52.231765, 21.035], 11)
 // You can choose your own range (or different number of colors)
 // and the code will compensate.
 var hues = [
-    '#eff3ff',
-    '#bdd7e7',
-    '#6baed6',
-    '#3182bd',
-    '#08519c'];
+  '#ffffb2',
+  '#fecc5c',
+  '#fd8d3c',
+  '#f03b20',
+  '#bd0026'];
+
+var huesGreen = [
+  '#ffffcc',
+  '#c2e699',
+  '#78c679',
+  '#31a354',
+  '#006837'];
 
 // The names of variables that we'll show in the UI for
 // styling. These need to match exactly.
@@ -69,6 +76,8 @@ var variables = [
   'crimeTotal',
   'crimePer10K',
   'livingQualityRank'];
+
+var greenVariables = ['bezpiecznieOkolica','bezpiecznieDzielnica','livingQualityRank'];
 
 // Collect the range of each variable over the full set, so
 // we know what to color the brightest or darkest.
@@ -146,6 +155,10 @@ function joinData(data, layer) {
 // The input is a string 'name', which specifies which column
 // of the imported JSON file is used to color the map.
 function setVariable(name) {
+    var colors = hues;
+    if (greenVariables.indexOf(name) >= 0) {
+      colors = huesGreen;
+    }
     var scale = ranges[name];
     usLayer.eachLayer(function(layer) {
         // Decide the color for each state by finding its
@@ -158,7 +171,7 @@ function setVariable(name) {
         // See full path options at
         // http://leafletjs.com/reference.html#path
         layer.setStyle({
-            fillColor: hues[division],
+            fillColor: colors[division],
             fillOpacity: 0.8,
             weight: 0.5
         });
